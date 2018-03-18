@@ -5,7 +5,6 @@ var moment = require('moment');
 var secret = 'clave_secreta_curso_desarrollar_red_social_angular';
 
 exports.ensureAuth = function(req, res, next){
-    console.log(req.headers);
     if(!req.headers.authorization){
         return res.status(403).send({message:'La peticion no tiene la cabecera de autenticacion'});
     }
