@@ -2,6 +2,7 @@
 
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
+var Follow = require('../models/follow');
 var jwt = require('../services/jwt');
 var fs = require('fs');
 var path = require('path');
@@ -108,8 +109,35 @@ function getUser(req,res){
         if(err) return res.status(500).send({message:'Error en la peticion'});
         if(!user) return res.status(404).send({message:'El usuario no existe'});
 
-        return res.status(200).send({user});
+        console.log(req.user.sub);
+        console.log(userId);
+        
+        Follow.findOne({'user':req.user.sub, 'followed':userId}).exec((err,following)=>{
+            if(err) return res.status(500).send({message: 'Error al comprobar el seguimiento'});
+            
+            Follow.findOne({'user':userId, 'followed':req.user.sub}).exec((err,followed)=>{
+                if(err) return res.status(500).send({message: 'Error al comprobar el seguimiento'});
+                return res.status(200).send({user, following , followed});
+            });
+        });
     });
+}
+
+async function followThisUser(identity_user_id, user_id){
+    var following = await Follow.findOne({'user':identity_user_id, 'followed':user_id}).exec((err,follow)=>{
+        if(err) return handleError(err);
+        return follow;
+    });
+
+    var follower = await Follow.findOne({'user':user_id, 'followed':identity_user_id}).exec((err,follow)=>{
+        if(err) return handleError(err);
+        return follow;
+    });
+
+    return {
+        following:following,
+        followed:followed
+    }
 }
 
 // devolver un listado de usuarios paginados
