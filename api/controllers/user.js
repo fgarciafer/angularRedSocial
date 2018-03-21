@@ -154,11 +154,49 @@ function getUsers(req,res){
         if(err) return res.status(500).send({message:'Error en la peticion'});
         if(!users) return res.status(404).send({message:'No hay usuarios disponibles'});
 
-        return res.status(200).send({
-            users,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
-        })
+        Follow.find({'user':identity_user_id}).select({'_id':0, '__v':0, 'user':0}).exec((err, follows)=>{
+            if(err) return res.status(500).send({message:'Error en la peticion'});
+            Follow.find({'followed':identity_user_id}).select({'_id':0, '__v':0, 'followed':0}).exec((err, followeds)=>{
+                if(err) return res.status(500).send({message:'Error en la peticion'});
+                console.log(follows);
+
+                var follows_clean = [];
+                follows.forEach((follow) => {
+                    follows_clean.push(follow.followed);
+                });
+                
+                var followeds_clean = [];
+                followeds.forEach((follow) => {
+                    followeds_clean.push(follow.user);
+                });
+
+                
+
+                return res.status(200).send({users, users_following : follows_clean, users_follow_me: followeds_clean,total,pages: Math.ceil(total/itemsPerPage)});
+            });
+        });
+    });
+}
+
+function getCounters(req,res) {
+    var userId = req.user.sub;
+
+    if(req.params.id){
+        var userId = req.params.id;
+    }
+    Follow.count({'user':userId}).exec((err,following) => {
+        if(err) return res.status(500).send({message:'Error en la peticion'});
+        
+        Follow.count({'followed':userId}).exec((err,followed) => {
+            if(err) return res.status(500).send({message:'Error en la peticion'});
+
+                res.status(200).send({
+                    following,
+                    followed
+                });
+
+
+        });
     });
 }
 
@@ -244,6 +282,7 @@ module.exports = {
     loginUser,
     getUser,
     getUsers,
+    getCounters,
     updateUser,
     uploadImage,
     getImageFile
