@@ -9,6 +9,7 @@ var app = express();
 var userRoutes = require('./routes/user');
 var followRoutes = require('./routes/follow');
 var publicationRoutes = require('./routes/publication');
+var messageRoutes = require('./routes/message');
 
 // cargar midlewares
 app.use(bodyParser.urlencoded({extended:false}));
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use('/api',userRoutes);
 app.use('/api',followRoutes);
 app.use('/api',publicationRoutes);
+app.use('/api',messageRoutes);
 
 // exportar
 

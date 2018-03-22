@@ -6,6 +6,7 @@ var Follow = require('../models/follow');
 var jwt = require('../services/jwt');
 var fs = require('fs');
 var path = require('path');
+var Publication = require('../models/publication');
 
 var mongoosePaginate = require('mongoose-pagination');
 
@@ -190,12 +191,15 @@ function getCounters(req,res) {
         Follow.count({'followed':userId}).exec((err,followed) => {
             if(err) return res.status(500).send({message:'Error en la peticion'});
 
+            Publication.count({'user':userId}).exec((err,publications) => {
+                if(err) return res.status(500).send({message:'Error en la peticion'});
+
                 res.status(200).send({
                     following,
-                    followed
+                    followed,
+                    publications
                 });
-
-
+            });
         });
     });
 }
