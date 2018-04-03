@@ -8,6 +8,10 @@
     margin-bottom: 20px;
 }
 
+.active{
+    background: #cc1717;
+}
+
 /*CABECERA*/
 .navigation{
     padding: 0px !important;
@@ -24,3 +28,28 @@
     color: white !important;
 }
 
+.navigation .navbar a:hover{
+    background: #cc1717 !important;
+}
+
+.jumbotron{
+    padding: 25px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.navigation .navbar .dropdown-menu *{
+    color: black !important;
+}
+
+.navbar-default .navbar-nav>open>a, .navbar-default .navbar-nav>.open>a.focus{
+    background: #cc1717 !important; 
+}
+
+.navigation .navbar .dropdown-menu a:hover{
+    background: #eee !important;
+}
+
+.pointer{
+    cursor: pointer;
+}
