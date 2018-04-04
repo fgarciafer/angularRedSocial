@@ -1,6 +1,11 @@
 <div class="col-lg-5">
     <h1 class="h1-strong">{{title}}</h1>
-
+    <div class="alert alert-success" *ngIf="status=='success'">
+        Se han actualizado tus datos correctamente
+    </div>
+    <div class="alert alert-danger" *ngIf="status=='error'">
+        No se han podido actualizar tus datos
+    </div>
 
     <form #userEditForm="ngForm" (ngSubmit)="onSubmit(userEditForm)" class="col-lg-12">
         <p>
@@ -22,6 +27,13 @@
             <label>Correo Electronico</label>
             <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
             <span *ngIf="!email.valid && email.touched">El correo no es correcto</span>
+        </p>
+        <div *ngIf="user.image">
+            <img src="{{ url + 'get-image-user/' + user.image}}"/>
+        </div>
+        <p>
+            <label>Sube tu avatar</label>
+            <input type="file" placeholder="Subir imagen" (change)="fileChangeEvent($event)"/>
         </p>
         <input type="submit" value="{{title}}" class="btn btn-warning" [disabled]="!userEditForm.form.valid"/>
     </form>
