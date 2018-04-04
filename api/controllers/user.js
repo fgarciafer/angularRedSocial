@@ -280,7 +280,7 @@ function removeFilesOfUploads(res,file_path, messageErr) {
 
 function getImageFile(req,res){
     var image_file = req.params.imageFile;
-    var path_file = './uploads/users/'+image_file;
+    var path_file = './uploads/user/'+image_file;
 
     fs.exists(path_file, (exists) =>{
         if(exists){
