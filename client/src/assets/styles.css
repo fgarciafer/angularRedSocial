@@ -53,3 +53,46 @@
 .pointer{
     cursor: pointer;
 }
+
+.navigation .avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 9px;
+    margin-right: 2px;
+}
+
+.navigation .avatar img{
+    height: auto;
+    width: 38px;
+}
+
+.item-user .image-user{
+    width: 75px;
+    height: 75px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.item-user .image-user img{
+    width: 75px;
+}
+
+.item-user .user-name{
+    margin-top: 10px;
+}
+
+.item-user .user-name .nickname{
+    color: #939999;
+}
+
+.item-user .user-name .name-surname a{
+    color: #666;
+    font-weight: bold;
+}
+
+.avatar-default{
+    width: 100%;
+}
