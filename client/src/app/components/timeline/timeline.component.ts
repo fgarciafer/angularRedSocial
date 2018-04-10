@@ -42,7 +42,8 @@ export class TimeLineComponent implements OnInit{
     getPublications(page){
         this._publicationService.getPublications(this.token,page).subscribe(
             response =>{
-                if(response.publication){
+                console.log(response);
+                if(response.publications){
                     this.publications = response.publications;
                     console.log(this.publications);
                     this.pages = response.pages;
