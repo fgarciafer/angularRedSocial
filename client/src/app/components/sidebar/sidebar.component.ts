@@ -3,11 +3,12 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
+import { PublicationService } from '../../services/publication.service';
 
 @Component({
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
-  providers: [UserService]
+  providers: [UserService,PublicationService]
 })
 
 export class SidebarComponent implements OnInit{
@@ -19,7 +20,8 @@ export class SidebarComponent implements OnInit{
     public publication: Publication;
 
     constructor(
-        private _userService:UserService
+        private _userService:UserService,
+        private _publicationService:PublicationService
     ){
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
@@ -32,8 +34,24 @@ export class SidebarComponent implements OnInit{
         console.log('El componente sidebar ha sido cargado');
     }
 
-    onSubmit(){
-        
+    onSubmit(form){
+        this._publicationService.addPublication(this.token, this.publication).subscribe(
+            response =>{
+                if(!response.publication){
+                    this.status = 'error';
+                }else{
+                    form.reset();
+                    // this.publication = response.publication;
+                    this.status = 'success';
+                }
+            },
+            error =>{
+                var errorMessage = <any> error;
+                if(!errorMessage){
+                    this.status = 'error';
+                }
+            }
+        );
     }
 
 
