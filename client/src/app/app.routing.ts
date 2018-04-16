@@ -1,6 +1,8 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { UserGuard } from './services/user.guard';
+
 // componentes
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -17,13 +19,13 @@ const appRoutes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: 'login', component: LoginComponent},
     {path: 'registro', component: RegisterComponent},
-    {path: 'mis-datos', component: UserEditComponent},
-    {path: 'timeline', component: TimeLineComponent},
-    {path: 'gente', component: UsersComponent},
-    {path: 'gente/:page', component: UsersComponent},
-    {path: 'perfil/:id', component: ProfileComponent},
-    {path: 'siguiendo/:id/:page', component: FollowingComponent},
-    {path: 'seguidores/:id/:page', component: FollowedComponent},
+    {path: 'mis-datos', component: UserEditComponent, canActivate:[UserGuard]},
+    {path: 'timeline', component: TimeLineComponent, canActivate:[UserGuard]},
+    {path: 'gente', component: UsersComponent, canActivate:[UserGuard]},
+    {path: 'gente/:page', component: UsersComponent, canActivate:[UserGuard]},
+    {path: 'perfil/:id', component: ProfileComponent, canActivate:[UserGuard]},
+    {path: 'siguiendo/:id/:page', component: FollowingComponent, canActivate:[UserGuard]},
+    {path: 'seguidores/:id/:page', component: FollowedComponent, canActivate:[UserGuard]},
     {path: '**', component: HomeComponent}
 ];
 
