@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
@@ -22,6 +22,7 @@ export class PublicationsComponent implements OnInit{
     public pages;
     public itemsPerPage;
     public publications:Publication[];
+    @Input() user: string;
 
     constructor(
         private _userService:UserService,
@@ -37,11 +38,11 @@ export class PublicationsComponent implements OnInit{
 
     ngOnInit(){
         console.log('Se ha iniciado el componente publications');
-        this.getPublications(this.page);
+        this.getPublications(this.user, this.page);
     }
 
-    getPublications(page, adding = false){
-        this._publicationService.getPublications(this.token,page).subscribe(
+    getPublications(user, page, adding = false){
+        this._publicationService.getPublicationsUser(this.token, user,page).subscribe(
             response =>{
                 if(response.publications){
                     this.pages = response.pages;
@@ -55,15 +56,17 @@ export class PublicationsComponent implements OnInit{
                         var arrayB = response.publications;
                         this.publications = arrayA.concat(arrayB);
 
-                        $("html, body").animate({ scrollTop: $('body').prop("scrollHeight")},500);
+                        $("html, body").animate({ scrollTop: $('html').prop("scrollHeight")},500);
                     }
 
                     if(this.total == this.publications.length){
                       this.noMore = true;
                     }
 
-                    if(page > this.pages){
-                        this._router.navigate(['/home']);
+                    if(!this.publications.length){
+                        if(page > this.pages){
+                            this._router.navigate(['/home']);
+                        }
                     }
                 }else{
                     this.status = 'error';
@@ -79,11 +82,11 @@ export class PublicationsComponent implements OnInit{
     }
     public noMore = false;
     viewMore(){
-        if(this.publications.length == this.total){
+        this.page +=1;
+        if(this.page == this.pages){
             this.noMore = true;
-        }else{
-            this.page +=1;
-            this.getPublications(this.page,true)
         }
+
+        this.getPublications(this.user, this.page, true);
     }
 }

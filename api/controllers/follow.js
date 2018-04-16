@@ -59,12 +59,32 @@ function getFollowingUsers(req,res){
         if(err) res.status(500).send({message:'Error en el servidor'});
         if(!follows) res.status(404).send({message: 'No estas siguiendo a ningun usuario'});
 
-        return res.status(200).send({
-            total: total,
-            pages: Math.ceil(total/itemsPerPage),
-            follows
-        });
+        Follow.find({'user':req.user.sub}).select({'_id':0, '__v':0, 'user':0}).exec((err, followings)=>{
+            if(err) return res.status(500).send({message:'Error en la peticion'});
 
+            Follow.find({'followed':req.user.sub}).select({'_id':0, '__v':0, 'followed':0}).exec((err, followeds)=>{
+                if(err) return res.status(500).send({message:'Error en la peticion'});
+
+                var follows_clean = [];
+                followings.forEach((follow) => {
+                    follows_clean.push(follow.followed);
+                });
+                
+                var followeds_clean = [];
+                followeds.forEach((follow) => {
+                    followeds_clean.push(follow.user);
+                });
+
+                return res.status(200).send({
+                    total: total,
+                    pages: Math.ceil(total/itemsPerPage),
+                    users_following : follows_clean,
+                    users_follow_me: followeds_clean,
+                    follows
+                });
+               
+            });
+        });        
     });
 }
 
@@ -89,12 +109,32 @@ function getFolledUser(req,res) {
         if(err) res.status(500).send({message:'Error en el servidor'});
         if(!follows) res.status(404).send({message: 'No te sigue ningun usuario'});
 
-        return res.status(200).send({
-            total: total,
-            pages: Math.ceil(total/itemsPerPage),
-            follows
-        });
+        Follow.find({'user':req.user.sub}).select({'_id':0, '__v':0, 'user':0}).exec((err, followings)=>{
+            if(err) return res.status(500).send({message:'Error en la peticion'});
 
+            Follow.find({'followed':req.user.sub}).select({'_id':0, '__v':0, 'followed':0}).exec((err, followeds)=>{
+                if(err) return res.status(500).send({message:'Error en la peticion'});
+
+                var follows_clean = [];
+                followings.forEach((follow) => {
+                    follows_clean.push(follow.followed);
+                });
+                
+                var followeds_clean = [];
+                followeds.forEach((follow) => {
+                    followeds_clean.push(follow.user);
+                });
+
+                return res.status(200).send({
+                    total: total,
+                    pages: Math.ceil(total/itemsPerPage),
+                    users_following : follows_clean,
+                    users_follow_me: followeds_clean,
+                    follows
+                });
+               
+            });
+        });     
     });
 }
 

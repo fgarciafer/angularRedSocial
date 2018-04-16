@@ -2,8 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { routing, appRoutingProviders } from './app.routing';
 import { FormsModule } from '@angular/forms';
-//import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import { MomentModule } from 'angular2-moment';
+
+// Modulo custom
+import { MessagesModule } from './messages/messages.module';
 
 // Cargar componentes
 import { AppComponent } from './app.component';
@@ -15,7 +18,10 @@ import { UsersComponent } from './components/users/users.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TimeLineComponent } from './components/timeline/timeline.component';
 import { PublicationsComponent } from './components/publications/publications.component';
-import { MomentModule } from 'angular2-moment';
+import { ProfileComponent } from './components/profile/profile.component';
+import { FollowingComponent } from './components/following/following.component';
+import { FollowedComponent } from './components/followed/followed.component';
+
 
 @NgModule({
   declarations: [
@@ -27,14 +33,18 @@ import { MomentModule } from 'angular2-moment';
     UsersComponent,
     SidebarComponent,
     TimeLineComponent,
-    PublicationsComponent
+    PublicationsComponent,
+    ProfileComponent,
+    FollowingComponent,
+    FollowedComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     routing,
     HttpClientModule,
-    MomentModule
+    MomentModule,
+    MessagesModule  
   ],
   providers: [
     appRoutingProviders

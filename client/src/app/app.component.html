@@ -22,7 +22,13 @@
             <span class="glyphicon glyphicon-user"></span>
             Gente
           </a> 
-        </li>                
+        </li>          
+        <li>
+            <a [routerLink]="['/mensajes']" [routerLinkActive]="['active']">
+             <span class="glyphicon glyphicon-envelope"></span>
+             Mensajes
+           </a> 
+         </li>
       </ul>
       <ul class="nav navbar navbar-nav navbar-right" *ngIf="!identity">
         <li>
@@ -48,7 +54,7 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a href="#">
+              <a [routerLink]="['/perfil', identity._id]" class="username">
                 <span class="glyphicon glyphicon-user"></span>
                 Mi perfil
               </a>

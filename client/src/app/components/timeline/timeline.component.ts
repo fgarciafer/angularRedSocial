@@ -21,6 +21,7 @@ export class TimeLineComponent implements OnInit{
     public total;
     public pages;
     public itemsPerPage;
+    public showImage;
     public publications:Publication[];
 
     constructor(
@@ -79,15 +80,36 @@ export class TimeLineComponent implements OnInit{
     }
     public noMore = false;
     viewMore(){
-        if(this.publications.length == this.total){
+        this.page +=1;
+
+        if(this.page == this.pages){
             this.noMore = true;
-        }else{
-            this.page +=1;
-            this.getPublications(this.page,true)
-        }
+        }            
+        
+        this.getPublications(this.page,true)
+        
     }
 
-    refresh(event){
+    refresh(event=null){
         this.getPublications(1);
+    }
+
+    showThisImage(id){
+        this.showImage = id;
+    }
+
+    hideThisImage(){
+        this.showImage = null;
+    }
+
+    deletePublication(id){
+        this._publicationService.deletePublication(this.token, id).subscribe(
+            response => {
+                this.refresh();
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );
     }
 }
